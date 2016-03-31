@@ -36,6 +36,8 @@ class ConsoleOutput(Output):
             self.print_red_text_with_blue_bg(msg)
         elif level == levelError:
             self.print_red_text(msg)
+        elif level == levelEmphasize:
+            self.print_emphasize_text(msg)
 
     def set_cmd_color(self, color):
         bool = ctypes.windll.kernel32.SetConsoleTextAttribute(self.std_out_handle, color)
@@ -66,6 +68,11 @@ class ConsoleOutput(Output):
 
     def print_red_text_with_blue_bg(self, print_text):
         self.set_cmd_color(FOREGROUND_RED | FOREGROUND_INTENSITY| BACKGROUND_BLUE | BACKGROUND_INTENSITY)
+        print print_text
+        self.reset_color()
+
+    def print_emphasize_text(self, print_text):
+        self.set_cmd_color(5 | FOREGROUND_INTENSITY)
         print print_text
         self.reset_color()
 

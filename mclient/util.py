@@ -28,7 +28,10 @@ def walktree(top, callback, param):
             if S_ISDIR(mode):
                 filecount += walktree(pathname, callback, param)
             elif S_ISREG(mode):
-                callback(pathname, param)
+                try:
+                    callback(pathname, param)
+                except Exception as e:
+                    log.error(e)
             if os.access(pathname, os.F_OK):
                 filecount += 1
         except:
@@ -66,6 +69,7 @@ def moveFile(pathname, param):
             os.unlink(targetPath)
         except:
             pass
+
         os.renames(pathname, targetPath)
         os.chdir(initDir)
 

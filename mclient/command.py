@@ -21,8 +21,8 @@ class Command:
         self.mRunTime = time.time()
 
     def postRun(self):
-        log.good("命令：%s"%self.getName())
-        log.good("执行时长:%f\n"%(time.time()-self.mRunTime))
+        log.emphasize("命令：%s"%self.getName())
+        log.emphasize("执行时长:%f\n"%(time.time()-self.mRunTime))
 
     def getName(self):
         return self.mName
@@ -44,9 +44,9 @@ class CommandGroup(Command):
         name = ""
         for cmd in self.mCmds:
             if name != "":
-                name = "%s->[%s]"%(name, cmd.getName())
+                name = "%s=>【%s】"%(name, cmd.getName())
             else:
-                name = "[%s]"%cmd.getName()
+                name = "【%s】"%cmd.getName()
 
         return name
 

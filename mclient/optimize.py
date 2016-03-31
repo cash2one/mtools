@@ -1,12 +1,13 @@
 # coding=gbk
 
-import csv
+import csv, re, os
 import log
 import util
 
 
-def optimizeActorAni():
+def optimizeActorAni(resDir, cdnDir):
     """优化微客户端动画播放"""
+    log.good("回滚角色动画资源 ...")
     dirList = [
         "Player_M_ck", "Player_M_ck_gz", "Player_W_ck", "Player_W_ck_gz",
         "Player_M_ds", "Player_M_ds_gz", "Player_W_ds", "Player_W_ds_gz",
@@ -15,37 +16,38 @@ def optimizeActorAni():
     ]
 
     curDir = os.path.abspath(".")
-    tarDir = os.path.abspath(MRESDIR)
-    os.chdir(MCDNDIR)
+    tarDir = os.path.abspath(resDir)
+    os.chdir(cdnDir)
     for name in dirList:
         dirName = "./Models/" + name
         if os.path.exists(dirName):
-            mvRes(dirName, tarDir, "(fb)")
+            util.mvRes(dirName, tarDir, "(fb)")
         else:
-            log.error("目录 %s%s 不存在"%(MCDNDIR, dirName))
+            log.error("目录 %s%s 不存在"%(cdnDir, dirName))
     os.chdir(curDir)
-    log.trace("current dir:%s"%os.path.abspath("."))
+    log.good("回滚角色动画资源 结束")
 
 
-def optimizeAllAni():
+def optimizeAllAni(resDir, cdnDir):
     curDir = os.path.abspath(".")
-    tarDir = os.path.abspath(MRESDIR)
-    os.chdir(MCDNDIR)
-    mvRes("./Models", tarDir, "(fb)")
+    tarDir = os.path.abspath(resDir)
+    os.chdir(cdnDir)
+    util.mvRes("./Models", tarDir, "(fb)")
     os.chdir(curDir)
 
 
-def optimizeByCsv(csvPath):
+def optimizeByCsv(csvPath, resDir, cdnDir):
+    log.good("处理 %s ..."%csvPath)
     csvObj = csv.reader(file(csvPath, 'rb'))
 
-    absResPath = os.path.abspath(MRESDIR)
+    absResPath = os.path.abspath(resDir)
     curDir = os.path.abspath(".")
     for line in csvObj:
         if len(line) > 0:
-            os.chdir(MCDNDIR)
+            os.chdir(cdnDir)
             pathname = line[0]
             if not os.path.exists(pathname):
-                log.error("文件 %s/%s 不存在"%(MCDNDIR, pathname))
+                # log.error("文件 %s/%s 不存在"%(cdnDir, pathname))
                 os.chdir(curDir)
                 continue
 
@@ -55,36 +57,44 @@ def optimizeByCsv(csvPath):
                 os.unlink(targetPath)
             except:
                 pass
+
             os.renames(pathname, targetPath)
             os.chdir(curDir)
-    log.trace("current dir:%s"%os.path.abspath("."))
+
+    log.good("处理 %s 结束"%csvPath)
+    # log.trace("current dir:%s"%os.path.abspath("."))
 
 
 def visitCsvFile(pathname, param):
     lpathname = pathname.lower()
     pattern = re.compile(param["pattern"])
+    resDir = param["resdir"]
+    cdnDir = param["cdndir"]
     m = pattern.match(lpathname)
     if m:
-        optimizeByCsv(pathname)
+        optimizeByCsv(pathname, resDir, cdnDir)
 
 
-def optimize():
+def optimize(resDir, cdnDir):
     # 动画播放体验优化
-    optimizeActorAni()
+    optimizeActorAni(resDir, cdnDir)
     # optimizeAllAni()
 
     # 依据csv表来优化体验
     param = {}
     param["pattern"] = ".*optimize.*\.csv$"
-    walktree("./", visitCsvFile, param)
+    param["resdir"] = resDir
+    param["cdndir"] = cdnDir
+    util.walktree("./", visitCsvFile, param)
 
 
-def moveBackMustFile():
+def moveBackMustFile(resDir, cdnDir):
     param = {}
     param["pattern"] = ".*mustfile.*\.csv$"
-    walktree("./", visitCsvFile, param)
+    param["resdir"] = resDir
+    param["cdndir"] = cdnDir
+    util.walktree("./", visitCsvFile, param)
 
 
 if __name__ == '__main__':
-    moveBackMustFile()
     os.system("pause")

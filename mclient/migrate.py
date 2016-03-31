@@ -21,7 +21,7 @@ _g_resource = {
 
     "Scene":[("./Scene/Maps", "(jpg|dds)"),
                ("./Scene/Grass", "(dds)"),
-               ("./Scene/Model", "(dds|tga|fb|obj)")],
+               ("./Scene/Model", "(dds|tga|fb|obj|mz)")],
 
     "Music":[("./Music", "(wav|mp3)")],
 

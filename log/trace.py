@@ -6,7 +6,8 @@ levelHintHint = 2
 levelHintGood = 4
 levelWarning = 8
 levelError = 16
-levelAll = levelTrace | levelHintHint | levelHintGood | levelWarning | levelError
+levelEmphasize = 32
+levelAll = levelTrace | levelHintHint | levelHintGood | levelWarning | levelError | levelEmphasize
 
 
 class Output:
@@ -18,6 +19,12 @@ class Output:
 
     def getLevel(self):
         return self.mLevel
+
+    def cancelLevel(self, lvl):
+        self.mLevel = self.mLevel & ~lvl
+
+    def flush(self):
+        pass
 
     def onTrace(self, msg, level):
         pass
@@ -39,6 +46,10 @@ class Tracer:
 
     def unregisterTrace(self, o):
         self.mOutput.remove(o)
+
+    def flush(self):
+        for o in self.mOutput:
+            o.flush()
 
     def output(self, msg, level):
         if (level & self.mLevel) != 0:
