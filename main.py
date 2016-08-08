@@ -24,6 +24,11 @@ _g_inputAction["c"] = HintAction("打包(类似大端打包方式)")
 _g_inputAction["d"] = _g_inputAction["4"]
 _g_inputAction["ab"] = ActionGroup(_g_inputAction["a"], _g_inputAction["b"])
 
+
+_g_inputAction["ta"] = mc.GlobalCmds[mc.TempSceneCmd_MigrateToRoot]
+_g_inputAction["tb"] = mc.GlobalCmds[mc.TempSceneCmd_MigrateToRes]
+
+
 _g_helpinfo  = "------------------------------------------------------------------------\n"
 _g_helpinfo += "提取/压缩:\n"
 tmpActKey = ["1", "2", "3", "4",]
@@ -37,6 +42,11 @@ for key in tmpActKey:
 
 _g_helpinfo += "\n其他命令:\n"
 tmpActKey = ["uzip",]
+for key in tmpActKey:
+    _g_helpinfo += "%s: %s\n"%(key, _g_inputAction[key].getName())
+
+_g_helpinfo += "\n临时命令:\n"
+tmpActKey = ["ta", "tb",]
 for key in tmpActKey:
     _g_helpinfo += "%s: %s\n"%(key, _g_inputAction[key].getName())
 _g_helpinfo += "------------------------------------------------------------------------"

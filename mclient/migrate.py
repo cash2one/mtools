@@ -6,7 +6,7 @@ import util
 MCDNDIR = "/Res_Weiduan"
 MRESDIR = "../Data"
 
-_g_resource = {
+migrate_rules = {
     "UI":[("./UI/Image", "(dds|tga)"),
            ("./UI/Image_New", "(tga|dds)"),
            ("./UI/effect", "(dds|tga)"),
@@ -33,13 +33,13 @@ _g_resource = {
 }
 
 
-def migrateRes(relSrcDir, tarDir, rebuildSrcDir = False):
+def migrateRes(relSrcDir, tarDir, resList, rebuildSrcDir = False):
     """×ÊÔ´Ç¨ÒÆ"""
 
     curDir = os.path.abspath(".")
     srcDir = os.path.abspath(relSrcDir)
     tarDir = os.path.abspath(tarDir)
-    for key, val in _g_resource.items():
+    for key, val in resList.items():
         for item in val:
             strdir = item[0]
             strpat = item[1]
@@ -49,7 +49,7 @@ def migrateRes(relSrcDir, tarDir, rebuildSrcDir = False):
             os.chdir(curDir)
 
     if rebuildSrcDir:
-        dirList = _g_resource.keys()
+        dirList = resList.keys()
         for name in dirList:
             dirname = os.path.join(relSrcDir, name)
             if not os.path.exists(dirname):

@@ -58,8 +58,11 @@ def optimizeByCsv(csvPath, resDir, cdnDir):
             except:
                 pass
 
-            os.renames(pathname, targetPath)
-            os.chdir(curDir)
+            try:
+                os.renames(pathname, targetPath)
+                os.chdir(curDir)
+            except Exception as e:
+                log.error("exception:%s file:%s"%(e, pathname))
 
     log.good("¥¶¿Ì %s Ω· ¯"%csvPath)
     # log.trace("current dir:%s"%os.path.abspath("."))

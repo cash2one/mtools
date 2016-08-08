@@ -27,6 +27,9 @@ class Command:
     def getName(self):
         return self.mName
 
+    def setName(self, name):
+        self.mName = name
+
 
 class CommandGroup(Command):
     def __init__(self, *cmds):

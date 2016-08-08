@@ -3,6 +3,8 @@
 DefaultCdnDir = "/Res_Weiduan"
 DefaultResDir = "../Data"
 
+TempSceneDir = "/Res_Scene"
+
 import util
 from command import *
 from migrate import *
@@ -10,17 +12,18 @@ from optimize import *
 
 
 class MigrateRes(Command):
-    def __init__(self, srcDir, tarDir, rebuildSrcDir = False):
+    def __init__(self, srcDir, tarDir, resList, rebuildSrcDir = False):
         Command.__init__(self)
 
         self.mName = "◊ ‘¥«®“∆£∫%s -> %s"%(srcDir, tarDir)
         self.mSrcDir = srcDir
         self.mTarDir = tarDir
+        self.mResList = resList
         self.mRebuildSrcDir = rebuildSrcDir
 
     def run(self):
         self.preRun()
-        migrateRes(self.mSrcDir, self.mTarDir, self.mRebuildSrcDir)
+        migrateRes(self.mSrcDir, self.mTarDir, self.mResList, self.mRebuildSrcDir)
         self.postRun()
         return 0
 
@@ -71,9 +74,16 @@ CmdId_Optimize = 4
 CmdId_UnlinkZip = 5
 
 GlobalCmds = {
-    CmdId_MigrateToCdn:MigrateRes(DefaultResDir, DefaultCdnDir, True),
-    CmdId_MigrateToRes:MigrateRes(DefaultCdnDir, DefaultResDir),
+    CmdId_MigrateToCdn:MigrateRes(DefaultResDir, DefaultCdnDir, migrate_rules, True),
+    CmdId_MigrateToRes:MigrateRes(DefaultCdnDir, DefaultResDir, migrate_rules),
     CmdId_RestoreMustFile:RestoreMustFile(),
     CmdId_Optimize:Optimization(),
-    CmdId_UnlinkZip:UnlinkCommand(DefaultResDir, "zip")
+    CmdId_UnlinkZip:UnlinkCommand(DefaultResDir, "zip"),
 }
+
+# ¡Ÿ ±√¸¡Ó
+TempSceneCmd_MigrateToRoot = 6
+TempSceneCmd_MigrateToRes = 7
+
+GlobalCmds[TempSceneCmd_MigrateToRoot] = MigrateRes(DefaultResDir, TempSceneDir, {"Scene":[("./Scene/Model", "(mz)")]}, False)
+GlobalCmds[TempSceneCmd_MigrateToRes] = MigrateRes(TempSceneDir, DefaultResDir, {"Scene":[("./Scene/Model", "(mz)")]}, False)
