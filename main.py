@@ -7,6 +7,8 @@ from action import *
 
 ActionGroup = mc.CommandGroup
 
+
+## 命令
 _g_inputAction = {
     "1":ActionGroup(mc.GlobalCmds[mc.CmdId_MigrateToCdn], mc.GlobalCmds[mc.CmdId_RestoreMustFile]),
     "2":OpenCloudIndex("打开打包工具(生成后再执行3)"),
@@ -24,11 +26,15 @@ _g_inputAction["c"] = HintAction("打包(类似大端打包方式)")
 _g_inputAction["d"] = _g_inputAction["4"]
 _g_inputAction["ab"] = ActionGroup(_g_inputAction["a"], _g_inputAction["b"])
 
-
 _g_inputAction["ta"] = mc.GlobalCmds[mc.TempSceneCmd_MigrateToRoot]
 _g_inputAction["tb"] = mc.GlobalCmds[mc.TempSceneCmd_MigrateToRes]
 
+_g_inputAction["pa"] = mc.GlobalCmds[mc.CmdId_Partner_MigrateToCdn]
+_g_inputAction["pb"] = mc.GlobalCmds[mc.CmdId_Partner_PatchRes]
+_g_inputAction["pd"] = mc.GlobalCmds[mc.CmdId_Partner_MigrateToRes]
 
+
+## 提示
 _g_helpinfo  = "------------------------------------------------------------------------\n"
 _g_helpinfo += "提取/压缩:\n"
 tmpActKey = ["1", "2", "3", "4",]
@@ -47,6 +53,11 @@ for key in tmpActKey:
 
 _g_helpinfo += "\n临时命令:\n"
 tmpActKey = ["ta", "tb",]
+for key in tmpActKey:
+    _g_helpinfo += "%s: %s\n"%(key, _g_inputAction[key].getName())
+
+_g_helpinfo += "\n联运相关:\n"
+tmpActKey = ["pa", "pb", "pd"]
 for key in tmpActKey:
     _g_helpinfo += "%s: %s\n"%(key, _g_inputAction[key].getName())
 _g_helpinfo += "------------------------------------------------------------------------"

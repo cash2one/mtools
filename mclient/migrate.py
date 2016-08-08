@@ -3,36 +3,6 @@
 import os
 import util
 
-MCDNDIR = "/Res_Weiduan"
-MRESDIR = "../Data"
-
-migrate_rules = {
-    "UI":[("./UI/Image", "(dds|tga)"),
-           ("./UI/Image_New", "(tga|dds)"),
-           ("./UI/effect", "(dds|tga)"),
-           ("./UI/UIModel", "(mz|dds|fb)")],
-
-    "Models":[("./Models", "(mz|dds|tga|fb|fbx|obj|rar|db)")],
-
-    "Effect":[("./Effect", "(mz|dds|tga|fb)"),
-                ("./Effect", "skilleffects", "ActorSkillEffect\\SkillEffect")],
-
-    "Creature":[("./Creature", "(mz|fb|dds)")],
-
-    "Scene":[("./Scene/Maps", "(jpg|dds)"),
-               ("./Scene/Grass", "(dds)"),
-               ("./Scene/Model", "(dds|tga|fb|obj|mz)")],
-
-    "Music":[("./Music", "(wav|mp3)")],
-
-    "Environment":[("./Environment", "(mz|dds)")],
-
-    "Texture":[("./Texture", "(dds)")],
-
-    "Lightmap":[("./Lightmap", "(dds)")],
-}
-
-
 def migrateRes(relSrcDir, tarDir, resList, rebuildSrcDir = False):
     """×ÊÔ´Ç¨ÒÆ"""
 
