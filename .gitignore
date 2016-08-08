@@ -9,6 +9,7 @@
 *.ini
 *.user
 *.obj
+*.log
 *.exe
 *.ilk
 *.pdb
